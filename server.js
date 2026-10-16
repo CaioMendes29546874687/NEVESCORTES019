@@ -4,7 +4,7 @@ const app=express();
 const pool=new Pool({connectionString:process.env.DATABASE_URL,ssl:process.env.DATABASE_URL&&!/localhost|127\\.0\\.1/.test(process.env.DATABASE_URL)?{rejectUnauthorized:false}:false});
 const SECRET=process.env.JWT_SECRET;
 app.use(express.json({limit:"20kb"}));app.use(express.static(path.join(__dirname,"public")));
-const seed=[["Barba",15,20,"Barbearia"],["Degradê",30,40,"Corte"],["Sobrancelha",5,10,"Acabamento"],["Pigmentação",15,20,"Acabamento"],["Luzes com o corte",90,120,"Coloração"],["Platinado com corte",120,180,"Coloração"],["Pacote (4 cortes com sobrancelha)",115,40,"Pacotes"],["Pacote (4 cortes)",105,40,"Pacotes"]];
+const seed=[["Barba",15,20,"Barbearia"],["Corte",30,40,"Corte"],["Social",30,40,"Corte"],["Degradê",30,40,"Corte"],["Sobrancelha",5,5,"Acabamento"],["Pigmentação",15,10,"Acabamento"],["Luzes com o corte",90,120,"Coloração"],["Platinado com corte",120,180,"Coloração"],["Pacote (4 cortes com sobrancelha)",115,40,"Pacotes"],["Pacote (4 cortes)",105,40,"Pacotes"]];
 async function init(){await pool.query(`
 CREATE TABLE IF NOT EXISTS services(id SERIAL PRIMARY KEY,name TEXT NOT NULL,price NUMERIC(10,2) NOT NULL,duration INT NOT NULL,category TEXT NOT NULL,active BOOLEAN NOT NULL DEFAULT TRUE);
 CREATE TABLE IF NOT EXISTS appointments(id BIGSERIAL PRIMARY KEY,customer_name TEXT NOT NULL,phone TEXT NOT NULL,service_id INT REFERENCES services(id),service_name TEXT NOT NULL,price NUMERIC(10,2) NOT NULL,duration INT NOT NULL,start_at TIMESTAMPTZ NOT NULL,end_at TIMESTAMPTZ NOT NULL,status TEXT NOT NULL DEFAULT 'pending' CHECK(status IN('pending','confirmed','completed','cancelled','no_show')),created_at TIMESTAMPTZ NOT NULL DEFAULT NOW());
