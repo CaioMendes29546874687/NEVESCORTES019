@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express=require("express"),path=require("path"),jwt=require("jsonwebtoken"),{Pool}=require("pg");
-const app=express(),pool=new Pool({connectionString:process.env.DATABASE_URL,ssl:process.env.DATABASE_URL&&!/localhost|127\.0\.0\.1/.test(process.env.DATABASE_URL)?{rejectUnauthorized:false}:false);
+const app=express();
+const pool=new Pool({connectionString:process.env.DATABASE_URL,ssl:process.env.DATABASE_URL&&!/localhost|127\\.0\\.1/.test(process.env.DATABASE_URL)?{rejectUnauthorized:false}:false});
 const SECRET=process.env.JWT_SECRET;
 app.use(express.json({limit:"20kb"}));app.use(express.static(path.join(__dirname,"public")));
 const seed=[["Corte tradicional",35,30,"Barbearia"],["Corte degradê",40,40,"Barbearia"],["Corte + barba",60,60,"Combo"],["Barba",25,25,"Barbearia"],["Corte feminino",60,60,"Cabelo"],["Escova",45,45,"Cabelo"],["Hidratação",50,45,"Cabelo"],["Coloração",120,120,"Cabelo"]];
